@@ -1,73 +1,23 @@
 queue()
-    .defer(d3.csv, "data/world-happiness-report-2019.csv")
+    .defer(d3.csv, "data/StudentsPerformance.csv")
     .await(makeGraph);
 
-function makeGraph(error, spendData) {
-    var ndx = crossfilter(spendData);
+function makeGraph(error, performanceData) {
+    var ndx = crossfilter(performanceData);
     
-    spendData.forEach(function(d) {
-        d.spend = parseInt(d.spend);
-    });
-
-    show_discipline_selector(ndx);
-    show_spending_per_person(ndx);
-    show_spending_per_store(ndx);
-    show_spending_per_city(ndx);
-    show_average_spending_per_person(ndx);
+    show_performance_in_math(ndx);
+    show_performance_in_reading(ndx);
+    show_performance_in_writing(ndx);
     
     dc.renderAll();
 }
 
-function show_discipline_selector(ndx) {
-    dim = ndx.dimension(dc.pluck("discipline"));
-    group = dim.group();
-    
-    dc.selectMenu("#discipline-selector")
-      .dimension(dim)
-      .group(group);
-}
 
-function show_spending_per_person(ndx) {
-    var dim = ndx.dimension(dc.pluck("Country"));
-    var group = dim.group().reduceSum(dc.pluck("Ladder"));
+function show_performance_in_math(ndx) {
+    var dim = ndx.dimension(dc.pluck("gender"));
+    var group = dim.group().reduceSum(dc.pluck("math score"));
 
-    dc.barChart("#spending-per-person")
-       .width(6500)
-       .height(500)
-       .margins({top: 10, right: 50, bottom: 30, left: 50})
-       .dimension(dim)
-       .group(group)
-       .transitionDuration(500)
-       .x(d3.scale.ordinal())
-       .xUnits(dc.units.ordinal)
-       .xAxisLabel("Person")
-       .elasticY(true)
-       .yAxis().ticks(10);
-}
-
-function show_spending_per_store(ndx) {
-    var dim = ndx.dimension(dc.pluck("store"));
-    var group = dim.group().reduceSum(dc.pluck("spend"));
-
-    dc.barChart("#spending-per-store")
-       .width(1000)
-       .height(500)
-       .margins({top: 10, right: 50, bottom: 30, left: 50})
-       .dimension(dim)
-       .group(group)
-       .transitionDuration(500)
-       .x(d3.scale.ordinal())
-       .xUnits(dc.units.ordinal)
-       .xAxisLabel("Store")
-       .elasticY(true)
-       .yAxis().ticks(10);
-}
-
-function show_spending_per_city(ndx) {
-    var dim = ndx.dimension(dc.pluck("city"));
-    var group = dim.group().reduceSum(dc.pluck("spend"));
-
-    dc.barChart("#spending-per-city")
+    dc.barChart("#math-performance")
        .width(500)
        .height(300)
        .margins({top: 10, right: 50, bottom: 30, left: 50})
@@ -76,7 +26,43 @@ function show_spending_per_city(ndx) {
        .transitionDuration(500)
        .x(d3.scale.ordinal())
        .xUnits(dc.units.ordinal)
-       .xAxisLabel("City")
+       .xAxisLabel("Math Score")
+       .elasticY(true)
+       .yAxis().ticks(10);
+}
+
+function show_performance_in_reading(ndx) {
+    var dim = ndx.dimension(dc.pluck("gender"));
+    var group = dim.group().reduceSum(dc.pluck("reading score"));
+
+    dc.barChart("#reading-performance")
+       .width(500)
+       .height(300)
+       .margins({top: 10, right: 50, bottom: 30, left: 50})
+       .dimension(dim)
+       .group(group)
+       .transitionDuration(500)
+       .x(d3.scale.ordinal())
+       .xUnits(dc.units.ordinal)
+       .xAxisLabel("reading score")
+       .elasticY(true)
+       .yAxis().ticks(10);
+}
+
+function show_performance_in_writing(ndx) {
+    var dim = ndx.dimension(dc.pluck("gender"));
+    var group = dim.group().reduceSum(dc.pluck("writing score"));
+
+    dc.barChart("#writing-performance")
+       .width(500)
+       .height(300)
+       .margins({top: 10, right: 50, bottom: 30, left: 50})
+       .dimension(dim)
+       .group(group)
+       .transitionDuration(500)
+       .x(d3.scale.ordinal())
+       .xUnits(dc.units.ordinal)
+       .xAxisLabel("writing score")
        .elasticY(true)
        .yAxis().ticks(10);
 }
