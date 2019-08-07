@@ -6,6 +6,7 @@ function makeGraph(error, performanceData) {
     var ndx = crossfilter(performanceData);
 
     show_ethnicity_distribution(ndx);
+    show_parental_level_of_education(ndx);
     show_performance_in_math(ndx);
     show_performance_in_reading(ndx);
     show_performance_in_writing(ndx);
@@ -65,7 +66,66 @@ function show_ethnicity_distribution(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
-        .margins({ top: 10, right: 100, bottom: 30, left: 30 });
+        .margins({ top: 10, right: 100, bottom: 30, left: 30 })
+        .xAxisLabel("Ethnic oring")
+}
+
+function show_parental_level_of_education(ndx) {
+
+    function rankByEducation(dimension, education) {
+        return dimension.group().reduce(
+            function(p, v) {
+                p.total++;
+                if (v.education == education) {
+                    p.match++;
+                }
+                return p;
+            },
+            function(p, v) {
+                p.total--;
+                if (v.education == education) {
+                    p.match--;
+                }
+                return p;
+            },
+            function() {
+                return { total: 0, match: 0 };
+            }
+        );
+    }
+
+    var dim = ndx.dimension(dc.pluck("gender"));
+    var aByEducation = rankByEducation(dim, "bachelor's degree");
+    var bByEducation = rankByEducation(dim, "some college");
+    var cByEducation = rankByEducation(dim, "master's degree");
+    var dByEducation = rankByEducation(dim, "associate's degree");
+    var eByEducation = rankByEducation(dim, "high school");
+    var fByEducation = rankByEducation(dim, "some high school");
+
+
+    dc.barChart("#parental-level-education")
+        .width(500)
+        .height(300)
+        .dimension(dim)
+        .group(aByEducation, "bachelor's degree")
+        .stack(bByEducation, "some college")
+        .stack(cByEducation, "master's degree")
+        .stack(dByEducation, "associate's degree")
+        .stack(eByEducation, "high school")
+        .stack(fByEducation, "some high school")
+        .valueAccessor(function(d) {
+            if (d.value.total > 0) {
+                return (d.value.match / d.value.total) * 100;
+            }
+            else {
+                return 0;
+            }
+        })
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
+        .margins({ top: 10, right: 100, bottom: 30, left: 30 })
+        .xAxisLabel("Parental education level")
 }
 
 function show_performance_in_math(ndx) {
@@ -119,51 +179,5 @@ function show_performance_in_writing(ndx) {
         .xUnits(dc.units.ordinal)
         .xAxisLabel("writing score")
         .elasticY(true)
-        .yAxis().ticks(10);
-}
-
-function show_average_spending_per_person(ndx) {
-    var dim = ndx.dimension(dc.pluck("name"));
-
-    function add_item(p, v) {
-        p.count++;
-        p.total += v.spend;
-        p.average = p.total / p.count;
-        return p;
-    }
-
-    function remove_item(p, v) {
-        p.count--;
-        if (p == 0) {
-            p.total = 0;
-            p.average = 0;
-        }
-        p.total -= v.spend;
-        p.average = p.total / p.count;
-        return p;
-    }
-
-    function initialise() {
-        return { count: 0, total: 0, average: 0 };
-    }
-
-
-    var averageSpending = dim.group().reduce(add_item, remove_item, initialise);
-
-
-    dc.barChart("#average-spending-per-person")
-        .width(400)
-        .height(300)
-        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
-        .dimension(dim)
-        .group(averageSpending)
-        .valueAccessor(function(d) {
-            return d.value.average;
-        })
-        .transitionDuration(500)
-        .x(d3.scale.ordinal())
-        .xUnits(dc.units.ordinal)
-        .elasticY(true)
-        .xAxisLabel("Average spending per person")
         .yAxis().ticks(10);
 }
