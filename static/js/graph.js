@@ -7,9 +7,16 @@ function makeGraph(error, performanceData) {
 
     show_ethnicity_distribution(ndx);
     show_parental_level_of_education(ndx);
+    show_lunch_accessibility(ndx);
     show_performance_in_math(ndx);
     show_performance_in_reading(ndx);
     show_performance_in_writing(ndx);
+    show_ethnic_math_result(ndx);
+    show_ethnic_reading_result(ndx);
+    show_ethnic_writing_result(ndx);
+    show_parental_education_math_result(ndx);
+    show_parental_education_reading_result(ndx);
+    show_parental_education_writing_result(ndx);
 
     dc.renderAll();
 }
@@ -67,7 +74,7 @@ function show_ethnicity_distribution(ndx) {
         .xUnits(dc.units.ordinal)
         .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 30, left: 30 })
-        .xAxisLabel("Ethnic oring")
+        .xAxisLabel("Ethnic origin");
 }
 
 function show_parental_level_of_education(ndx) {
@@ -125,8 +132,59 @@ function show_parental_level_of_education(ndx) {
         .xUnits(dc.units.ordinal)
         .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 30, left: 30 })
-        .xAxisLabel("Parental education level")
+        .xAxisLabel("Parental education level");
 }
+
+
+function show_lunch_accessibility(ndx) {
+
+    function rankByLunchAccessibility(dimension, lunch) {
+        return dimension.group().reduce(
+            function(p, v) {
+                p.total++;
+                if (v.lunch == lunch) {
+                    p.match++;
+                }
+                return p;
+            },
+            function(p, v) {
+                p.total--;
+                if (v.lunch == lunch) {
+                    p.match--;
+                }
+                return p;
+            },
+            function() {
+                return { total: 0, match: 0 };
+            }
+        );
+    }
+
+    var dim = ndx.dimension(dc.pluck("gender"));
+    var femaleByLunchAccessibility = rankByLunchAccessibility(dim, "standard");
+    var maleByLunchAccessibility = rankByLunchAccessibility(dim, "free/reduced");
+
+    dc.barChart("#lunch-accessibility")
+        .width(500)
+        .height(300)
+        .dimension(dim)
+        .group(femaleByLunchAccessibility, "standard")
+        .stack(maleByLunchAccessibility, "free/reduced")
+        .valueAccessor(function(d) {
+            if (d.value.total > 0) {
+                return (d.value.match / d.value.total) * 100;
+            }
+            else {
+                return 0;
+            }
+        })
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
+        .margins({ top: 10, right: 100, bottom: 30, left: 30 })
+        .xAxisLabel("lunch Accessibility");
+}
+
 
 function show_performance_in_math(ndx) {
     var dim = ndx.dimension(dc.pluck("gender"));
@@ -178,6 +236,116 @@ function show_performance_in_writing(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .xAxisLabel("writing score")
+        .elasticY(true)
+        .yAxis().ticks(10);
+}
+
+
+function show_ethnic_math_result(ndx) {
+    var dim = ndx.dimension(dc.pluck("ethnicity"));
+    var group = dim.group().reduceSum(dc.pluck("math score"));
+
+    dc.barChart("#ethnic-math-result")
+        .width(500)
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("ethnic Math result")
+        .elasticY(true)
+        .yAxis().ticks(10);
+}
+
+function show_ethnic_reading_result(ndx) {
+    var dim = ndx.dimension(dc.pluck("ethnicity"));
+    var group = dim.group().reduceSum(dc.pluck("reading score"));
+
+    dc.barChart("#ethnic-reading-result")
+        .width(500)
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("ethnic reading result")
+        .elasticY(true)
+        .yAxis().ticks(10);
+}
+
+function show_ethnic_writing_result(ndx) {
+    var dim = ndx.dimension(dc.pluck("ethnicity"));
+    var group = dim.group().reduceSum(dc.pluck("writing score"));
+
+    dc.barChart("#ethnic-writing-result")
+        .width(500)
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("ethnic writing result")
+        .elasticY(true)
+        .yAxis().ticks(10);
+}
+
+function show_parental_education_math_result(ndx) {
+    var dim = ndx.dimension(dc.pluck("education"));
+    var group = dim.group().reduceSum(dc.pluck("math score"));
+
+    dc.barChart("#parental-education-math")
+        .width(700)
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("parental education math result")
+        .elasticY(true)
+        .yAxis().ticks(10);
+}
+
+function show_parental_education_reading_result(ndx) {
+    var dim = ndx.dimension(dc.pluck("education"));
+    var group = dim.group().reduceSum(dc.pluck("reading score"));
+
+    dc.barChart("#parental-education-reading")
+        .width(700)
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("parental education reading result")
+        .elasticY(true)
+        .yAxis().ticks(10);
+}
+
+
+function show_parental_education_writing_result(ndx) {
+    var dim = ndx.dimension(dc.pluck("education"));
+    var group = dim.group().reduceSum(dc.pluck("writing score"));
+
+    dc.barChart("#parental-education-writing")
+        .width(700)
+        .height(300)
+        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .dimension(dim)
+        .group(group)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("parental education writing result")
         .elasticY(true)
         .yAxis().ticks(10);
 }
