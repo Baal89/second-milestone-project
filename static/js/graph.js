@@ -4,6 +4,10 @@ queue()
 
 function makeGraphs(error, performanceData) {
     var ndx = crossfilter(performanceData);
+    
+    performanceData.forEach(function(d) {
+        d.Medu = parseInt(d.Medu);
+    });
 
     show_gender_balance(ndx);
     show_age_balance(ndx);
@@ -73,14 +77,14 @@ function show_mother_education(ndx) {
         return dimension.group().reduce(
             function(p, v) {
                 p.total++;
-                if (v.rank == Medu) {
+                if (v.Medu == Medu) {
                     p.match++;
                 }
                 return p;
             },
             function(p, v) {
                 p.total--;
-                if (v.rank == Medu) {
+                if (v.Medu == Medu) {
                     p.match--;
                 }
                 return p;
@@ -99,7 +103,7 @@ function show_mother_education(ndx) {
     var higherMotherEducation = graduationBYMotherEducation(dim, "4");
 
     dc.barChart("#mother-education")
-        .width(400)
+        .width(700)
         .height(300)
         .dimension(dim)
         .group(noneMotherEducation, "0")
@@ -107,7 +111,7 @@ function show_mother_education(ndx) {
         .stack(secondaryMotherEducation, "2")
         .stack(secondaryGradeMotherEducation, "3")
         .stack(higherMotherEducation, "4")
-        .valueAccessor(function(d) {
+        .valueAccessor(function (d) {
             if (d.value > 0) {
                 return (d.value.match / d.value.total) * 100;
             }
@@ -117,7 +121,9 @@ function show_mother_education(ndx) {
         })
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
-        .legend(dc.legend().x(320).y(20).itemHeight(15).gap(5))
+        .legend(dc.legend().x(600).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 30, left: 30 });
+        
+        console.log(noneMotherEducation.all());
 }
 
