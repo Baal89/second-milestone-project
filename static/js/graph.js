@@ -16,9 +16,10 @@ function makeGraphs(error, performanceData) {
     show_mother_education(ndx);
     show_father_education(ndx);
 
-    show_percent_higher_education(ndx, "F", "percentage-of-female-mother-higher-education");
-    show_percent_higher_education(ndx, "M", "percentage-of-male-mother-higher-education");
-    //show_percent_father_higher_education(ndx);
+    show_percent_higher_mother_education(ndx, "F", "#percentage-of-female-mother-higher-education");
+    show_percent_higher_mother_education(ndx, "M", "#percentage-of-male-mother-higher-education");
+    show_percent_higher_father_education(ndx, "F","#percentage-of-female-father-higher-education");
+    show_percent_higher_father_education(ndx, "M","#percentage-of-male-father-higher-education");
 
     show_performance_to_workday_alcohol_cosumption(ndx);
 
@@ -184,12 +185,12 @@ function show_father_education(ndx) {
         .margins({ top: 10, right: 100, bottom: 50, left: 50 });
 }
 
-function show_percent_higher_education(ndx, gender, element) {
+function show_percent_higher_mother_education(ndx, gender, element) {
     var percentageMotherHigherEducation = ndx.groupAll().reduce(
         function(p, v) {
             if (v.sex === gender) {
                 p.count++;
-                if (v.Medu === "4") {
+                if(v.Medu === "4") {
                     p.are_higher++;
                 }
             }
@@ -198,29 +199,63 @@ function show_percent_higher_education(ndx, gender, element) {
         function(p, v) {
             if (v.sex === gender) {
                 p.count--;
-                if (v.Medu === "4") {
+                if(v.Medu === "4") {
                     p.are_higher--;
                 }
             }
             return p;
         },
         function() {
-            return { count: 0, are_higher: 0 };
-        }
+            return {count: 0, are_higher: 0};    
+        },
     );
-
-    dc.numberDisplay(element)
+   dc.numberDisplay(element)
         .formatNumber(d3.format(".2%"))
-        .valueAccessor(function(d) {
+        .valueAccessor(function (d) {
             if (d.count == 0) {
                 return 0;
-            }
-            else {
-                return (d.higher / d.count);
+            } else {
+                return (d.are_higher / d.count);
             }
         })
         .group(percentageMotherHigherEducation);
 }
+
+ function show_percent_higher_father_education(ndx, gender, element) {
+       var percentageFatherHigherEducation = ndx.groupAll().reduce(
+        function(p, v) {
+            if (v.sex === gender) {
+                p.count++;
+                if(v.Fedu === "4") {
+                    p.are_higher++;
+                }
+            }
+            return p;
+        },
+        function(p, v) {
+            if (v.sex === gender) {
+                p.count--;
+                if(v.Fedu === "4") {
+                    p.are_higher--;
+                }
+            }
+            return p;
+        },
+        function() {
+            return {count: 0, are_higher: 0};    
+        },
+    );
+   dc.numberDisplay(element)
+        .formatNumber(d3.format(".2%"))
+        .valueAccessor(function (d) {
+            if (d.count == 0) {
+                return 0;
+            } else {
+                return (d.are_higher / d.count);
+            }
+        })
+        .group(percentageFatherHigherEducation);
+ }
 
 function show_performance_to_workday_alcohol_cosumption(ndx) {
 
