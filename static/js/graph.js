@@ -4,7 +4,7 @@ queue()
 
 function makeGraphs(error, performanceData) {
     var ndx = crossfilter(performanceData);
-    
+
     performanceData.forEach(function(d) {
         d.G3 = parseInt(d.G3);
     });
@@ -16,14 +16,20 @@ function makeGraphs(error, performanceData) {
     show_mother_education(ndx);
     show_father_education(ndx);
 
+    show_percent_higher_education(ndx, "F", "percentage-of-female-mother-higher-education");
+    show_percent_higher_education(ndx, "M", "percentage-of-male-mother-higher-education");
+    //show_percent_father_higher_education(ndx);
+
     show_performance_to_workday_alcohol_cosumption(ndx);
+
+    show_student_performance(ndx);
 
     dc.renderAll();
 }
 
 function show_discipline_selector(ndx) {
-    dim = ndx.dimension(dc.pluck("discipline"))
-    group = dim.group()
+    var dim = ndx.dimension(dc.pluck("discipline"));
+    var group = dim.group();
 
     dc.selectMenu("#discipline-selector")
         .dimension(dim)
@@ -102,11 +108,11 @@ function show_mother_education(ndx) {
         .width(500)
         .height(300)
         .dimension(dim)
-        .group(noneMotherEducation)
-        .stack(secondaryGradeMotherEducation)
-        .stack(secondaryMotherEducation)
-        .stack(firstMotherEducation)
-        .stack(higherMotherEducation)
+        .group(noneMotherEducation, "none")
+        .stack(secondaryGradeMotherEducation, "primary")
+        .stack(secondaryMotherEducation, "High School")
+        .stack(firstMotherEducation, "College")
+        .stack(higherMotherEducation, "higher")
         .valueAccessor(function(d) {
             if (d.value.total > 0) {
                 return (d.value.match / d.value.total) * 100;
@@ -117,8 +123,9 @@ function show_mother_education(ndx) {
         })
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
-        .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
-        .margins({ top: 10, right: 100, bottom: 30, left: 30 });
+        .xAxisLabel("Mother education level per gender")
+        .legend(dc.legend().x(410).y(20).itemHeight(15).gap(5))
+        .margins({ top: 10, right: 100, bottom: 50, left: 50 });
 }
 
 function show_father_education(ndx) {
@@ -150,18 +157,18 @@ function show_father_education(ndx) {
     var firstFatherEducation = fatherEducation(dim, "1");
     var secondaryFatherEducation = fatherEducation(dim, "2");
     var secondaryGradeFatherEducation = fatherEducation(dim, "3");
-    var higherFatherEducation = fatherEducation(dim, "4")
+    var higherFatherEducation = fatherEducation(dim, "4");
 
 
     dc.barChart("#father-education")
         .width(500)
         .height(300)
         .dimension(dim)
-        .group(noneFatherEducation)
-        .stack(secondaryGradeFatherEducation)
-        .stack(secondaryFatherEducation)
-        .stack(firstFatherEducation)
-        .stack(higherFatherEducation)
+        .group(noneFatherEducation, "none")
+        .stack(secondaryGradeFatherEducation, "primary")
+        .stack(secondaryFatherEducation, "High School")
+        .stack(firstFatherEducation, "College")
+        .stack(higherFatherEducation, "higher")
         .valueAccessor(function(d) {
             if (d.value.total > 0) {
                 return (d.value.match / d.value.total) * 100;
@@ -172,14 +179,58 @@ function show_father_education(ndx) {
         })
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
+        .xAxisLabel("father education level per gender")
         .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
-        .margins({ top: 10, right: 100, bottom: 30, left: 30 });
+        .margins({ top: 10, right: 100, bottom: 50, left: 50 });
+}
+
+function show_percent_higher_education(ndx, gender, element) {
+    var percentageMotherHigherEducation = ndx.groupAll().reduce(
+        function(p, v) {
+            if (v.sex === gender) {
+                p.count++;
+                if (v.Medu === "4") {
+                    p.are_higher++;
+                }
+            }
+            return p;
+        },
+        function(p, v) {
+            if (v.sex === gender) {
+                p.count--;
+                if (v.Medu === "4") {
+                    p.are_higher--;
+                }
+            }
+            return p;
+        },
+        function() {
+            return { count: 0, are_higher: 0 };
+        }
+    );
+
+    dc.numberDisplay(element)
+        .formatNumber(d3.format(".2%"))
+        .valueAccessor(function(d) {
+            if (d.count == 0) {
+                return 0;
+            }
+            else {
+                return (d.higher / d.count);
+            }
+        })
+        .group(percentageMotherHigherEducation);
 }
 
 function show_performance_to_workday_alcohol_cosumption(ndx) {
+
+    var genderColors = d3.scale.ordinal()
+        .domain(["Female", "Male"])
+        .range(["pink", "blue"]);
+
     var performanceDim = ndx.dimension(dc.pluck("G3"))
     var consumptionDim = ndx.dimension(function(d) {
-        return [d.G3, d.Dalc];
+        return [d.G3, d.Dalc, d.sex];
     });
     var workDayConsumptionGroup = consumptionDim.group();
 
@@ -190,14 +241,72 @@ function show_performance_to_workday_alcohol_cosumption(ndx) {
         .width(800)
         .height(400)
         .x(d3.scale.linear().domain([minPerformance, maxPerformance]))
+        .y(d3.scale.linear().domain([0, 10]))
         .brushOn(false)
         .symbolSize(8)
-        .clipPadding(10)
+        .clipPadding(5)
         .xAxisLabel("")
         .title(function(d) {
-            return "Work day Consumption: " + d.key[1];
+            return "Work day Consumption: " + d.key[1] + " units";
+        })
+        .colors(genderColors)
+        .colorAccessor(function(d) {
+            return d.key[2];
         })
         .dimension(consumptionDim)
         .group(workDayConsumptionGroup)
-        .margins({ top: 10, right: 50, bottom: 75, left: 75 });
+        .xAxisLabel("final grade math results")
+        .yAxisLabel("units of alchool per workday")
+        .margins({ top: 10, right: 50, bottom: 75, left: 75 })
+        .yAxis().ticks(5);
+}
+
+
+function show_student_performance(ndx) {
+
+    function schoolPerformance(dimension, sex) {
+        return dimension.group().reduce(
+            function(p, v) {
+                p.total++;
+                if (v.sex == sex) {
+                    p.match++;
+                }
+                return p;
+            },
+            function(p, v) {
+                p.total--;
+                if (v.sex == sex) {
+                    p.match--;
+                }
+                return p;
+            },
+            function() {
+                return { total: 0, match: 0 };
+            }
+        );
+    }
+
+    var dim = ndx.dimension(dc.pluck("G3"));
+    var femalePerformance = schoolPerformance(dim, "F");
+    var malePerformance = schoolPerformance(dim, "M");
+
+    dc.barChart("#student-performance")
+        .width(700)
+        .height(300)
+        .dimension(dim)
+        .group(femalePerformance, "female")
+        .stack(malePerformance, "male")
+        .valueAccessor(function(d) {
+            if (d.value.total > 0) {
+                return (d.value.match / d.value.total) * 100;
+            }
+            else {
+                return 0;
+            }
+        })
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("final grade math results")
+        .legend(dc.legend().x(620).y(20).itemHeight(15).gap(5))
+        .margins({ top: 10, right: 100, bottom: 50, left: 30 });
 }
