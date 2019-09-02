@@ -1,47 +1,93 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content"ie=edge">
-        <title> dashboard </title>
-        
-        <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css" />
-        <link rel="stylesheet" href="static/css/dc.min.css" type="text/css" />
-        
-        <script type="text/javascript" src="static/js/d3.min.js"></script>
-        <script type="text/javascript" src="static/js/crossfilter.min.js"></script>
-        <script type="text/javascript" src="static/js/dc.min.js"></script>
-        <script type="text/javascript" src="static/js/queue.min.js"></script>
-        <script type="text/javascript" src="static/js/graph.js"></script>
-        
-    </head>
-    
-    <body>
-        
-        
-        <h1> student performance and alcohol consumption </h1>
-        
-        <div id="discipline-selector"></div>
-        
-        <div id="sex-distribution"></div>
-        
-        <div id="age-distribution"></div>
-        
-        <div id="mother-education"></div>
-        
-        <div id="percentage-of-female-mother-higher-education"></div>
-        <div id="percentage-of-male-mother-higher-education"></div>
-        
-        <div id="father-education"></div>
-        
-        <div id="percentage-of-female-father-higher-education"></div>
-        <div id="percentage-of-male-father-higher-education"></div> 
-        
-        <div id="workday-alcohol-graduation"></div>
-        
-        <div id="student-performance"></div>
-       
-        
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content "ie=edge">
+    <title> dashboard </title>
+
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="static/css/dc.min.css" type="text/css" />
+    <link rel="stylesheet" href="static/css/style.css" type="text/css" />
+
+    <script type="text/javascript" src="static/js/d3.min.js"></script>
+    <script type="text/javascript" src="static/js/crossfilter.min.js"></script>
+    <script type="text/javascript" src="static/js/dc.min.js"></script>
+    <script type="text/javascript" src="static/js/queue.min.js"></script>
+    <script type="text/javascript" src="static/js/graph.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="row">
+            <h1> student performance and alcohol consumption </h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md offset-md-5">Select Discipline</div>
+        </div>
+        <div class="row">
+            <div class="col-md offset-md-5" id="discipline-selector"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">There is not a big difference in the gender population of the schools</div>
+            <div class="col-md-6">The population age is equally distributed between the different ages</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" id="sex-distribution"></div>
+            <div class="col-md-6" id="age-distribution"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">The majority of the children's mother have got an high education </div>
+            <div class="col-md-6">Only a quarter of the children's father have got an high educational level</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="number-box" id="percentage-of-female-mother-higher-education"></div>
+                <div class="number-box" id="percentage-of-male-mother-higher-education"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="number-box" id="percentage-of-female-father-higher-education"></div>
+                <div class="number-box" id="percentage-of-male-father-higher-education"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">The rest of the mother's education level is equally distributed beetwen the other levels</div>
+            <div class="col-md-6">The rest of the father's education level is equally distributed beetwen the other levels</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" id="mother-education"></div>
+            <div class="col-md-6" id="father-education"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md offset-md-2">It seems there is a little correlation between the alchol consumption and the grade result</div>
+        </div>
+        <div class="row">
+            <div class="col-md offset-md-2">The males got an average consumption of alchol per workday much higher than the female</div>
+        </div>
+        <div class="row">
+            <div class="col-md offset-md-2" id="workday-alcohol-graduation"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md offset-md-2">The male performance are slighty higher than the female</div>
+        </div>
+        <div class="row">
+            <div class="col-md offset-md-2">It seems that the parental education level got an higher impact on the result than the alchol consumption</div>
+        </div>
+        <div class="row">
+            <div class="col-md offset-md-2" id="student-performance"></div>
+        </div>
+
+    </div>
+</body>
+
 </html>

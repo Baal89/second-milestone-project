@@ -326,8 +326,8 @@ function show_student_performance(ndx) {
     var malePerformance = schoolPerformance(dim, "M");
 
     dc.barChart("#student-performance")
-        .width(700)
-        .height(300)
+        .width(800)
+        .height(400)
         .dimension(dim)
         .group(femalePerformance, "female")
         .stack(malePerformance, "male")
@@ -342,6 +342,6 @@ function show_student_performance(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .xAxisLabel("final grade math results")
-        .legend(dc.legend().x(620).y(20).itemHeight(15).gap(5))
+        .legend(dc.legend().x(720).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 50, left: 30 });
 }
