@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content "ie=edge">
-    <title> dashboard </title>
+    <title>Student Performance</title>
 
     <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="static/css/dc.min.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css">
     <link rel="stylesheet" href="static/css/style.css" type="text/css" />
 
     <script type="text/javascript" src="static/js/d3.min.js"></script>
@@ -20,74 +21,118 @@
 </head>
 
 <body>
-    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Student performance</a>
+    </nav>
 
-        <div class="row">
-            <h1> student performance and alcohol consumption </h1>
-        </div>
+    <main>
+        <article class="container">
+            <header>
+                <h1>How alcohol consumption and parental education level affect student performance</h1>
+                <p>This is a report from the Ministry of the Education with the purpose to help school administrators to focus on how the social enviroment of the children can affect their academic performance.</p>
+            </header>
+            <p>the report is focused on the parental education level of the children and on their alcohol consumption per workday, ponting out that children with poor parental level of education usualy achieve a lower score and the alchol consumption per
+                workday is generally high specially in the male component of the schools.<br> With this report the Ministry want to create, with the support of the school administrators, a scheme focused on these critical issues to provide support to
+                those children who might need it, helping them to achieve the best possible result in the most safe enviroment.
+            </p>
+        </article>
 
-        <div class="row">
-            <div class="col-md offset-md-5">Select Discipline</div>
-        </div>
-        <div class="row">
-            <div class="col-md offset-md-5" id="discipline-selector"></div>
-        </div>
+        <section class="section">
+            <div class="container">
 
-        <div class="row">
-            <div class="col-md-6">There is not a big difference in the gender population of the schools</div>
-            <div class="col-md-6">The population age is equally distributed between the different ages</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6" id="sex-distribution"></div>
-            <div class="col-md-6" id="age-distribution"></div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-6">The majority of the children's mother have got an high education </div>
-            <div class="col-md-6">Only a quarter of the children's father have got an high educational level</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="number-box" id="percentage-of-female-mother-higher-education"></div>
-                <div class="number-box" id="percentage-of-male-mother-higher-education"></div>
+                <div class="row">
+                    <div class="col-12 col-md-12 text-center">Gabriel Pereira or Mousinho da Silveira(schools)</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-12 text-center" id="discipline-selector"></div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="number-box" id="percentage-of-female-father-higher-education"></div>
-                <div class="number-box" id="percentage-of-male-father-higher-education"></div>
+        </section>
+
+
+        <section class="section">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12 col-md-6 text-center">
+                        <p>This graph shows the gender distibution in the schools</p>
+                    </div>
+                    <div class="col-12 col-md-6 text-center">
+                        <p>Here we can see the different age population in the schools</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6 text-center" id="sex-distribution"></div>
+                    <div class="col-12 col-md-6 text-center" id="age-distribution"></div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="row">
-            <div class="col-md-6">The rest of the mother's education level is equally distributed beetwen the other levels</div>
-            <div class="col-md-6">The rest of the father's education level is equally distributed beetwen the other levels</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6" id="mother-education"></div>
-            <div class="col-md-6" id="father-education"></div>
-        </div>
 
-        <div class="row">
-            <div class="col-md offset-md-2">It seems there is a little correlation between the alchol consumption and the grade result</div>
-        </div>
-        <div class="row">
-            <div class="col-md offset-md-2">The males got an average consumption of alchol per workday much higher than the female</div>
-        </div>
-        <div class="row">
-            <div class="col-md offset-md-2" id="workday-alcohol-graduation"></div>
-        </div>
+        <section class="section">
+            <div class="container">
 
-        <div class="row">
-            <div class="col-md offset-md-2">The male performance are slighty higher than the female</div>
-        </div>
-        <div class="row">
-            <div class="col-md offset-md-2">It seems that the parental education level got an higher impact on the result than the alchol consumption</div>
-        </div>
-        <div class="row">
-            <div class="col-md offset-md-2" id="student-performance"></div>
-        </div>
+                <div class="row">
+                    <div class="col-6">These percentages show the amount of male and female's mothers with an higher education level compared to the total</div>
+                    <div class="col-6">These percentages show the amount of male and female's fathers with an higher education level compared to the total</div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i><span class="number-box" id="percentage-of-female-mother-higher-education"></span>
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i><span class="number-box" id="percentage-of-male-mother-higher-education"></span>
+                    </div>
+                    <div class="col-6">
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i><span class="number-box" id="percentage-of-female-father-higher-education"></span>
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i><span class="number-box" id="percentage-of-male-father-higher-education"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    </div>
+
+
+        <section class="section">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-6">Here we got the full spectrum of male and female's mothers education level</div>
+                    <div class="col-md-6">Here we got the full spectrum of male and female's fathers education level</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" id="mother-education"></div>
+                    <div class="col-md-6" id="father-education"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="section">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12 text-center">this graph show the correlation between alchol consumption per workday and the final math grade result test</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center" id="workday-alcohol-graduation"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="section">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12 text-center">And finally this graph show the different results for male and female in the final math test</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center" id="student-performance"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 </body>
 
 </html>

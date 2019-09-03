@@ -42,8 +42,8 @@ function show_sex_distribution(ndx) {
     var group = dim.group();
 
     dc.barChart("#sex-distribution")
-        .width(500)
-        .height(300)
+        .width(450)
+        .height(250)
         .margins({ top: 10, right: 50, bottom: 30, left: 50 })
         .dimension(dim)
         .group(group)
@@ -60,8 +60,8 @@ function show_age_distribution(ndx) {
     var group = dim.group();
 
     dc.barChart("#age-distribution")
-        .width(500)
-        .height(300)
+        .width(450)
+        .height(250)
         .margins({ top: 10, right: 50, bottom: 30, left: 50 })
         .dimension(dim)
         .group(group)
@@ -106,8 +106,8 @@ function show_mother_education(ndx) {
 
 
     dc.barChart("#mother-education")
-        .width(500)
-        .height(300)
+        .width(450)
+        .height(250)
         .dimension(dim)
         .group(noneMotherEducation, "none")
         .stack(secondaryGradeMotherEducation, "primary")
@@ -125,7 +125,7 @@ function show_mother_education(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .xAxisLabel("Mother education level per gender")
-        .legend(dc.legend().x(410).y(20).itemHeight(15).gap(5))
+        .legend(dc.legend().x(370).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 50, left: 50 });
 }
 
@@ -162,8 +162,8 @@ function show_father_education(ndx) {
 
 
     dc.barChart("#father-education")
-        .width(500)
-        .height(300)
+        .width(450)
+        .height(250)
         .dimension(dim)
         .group(noneFatherEducation, "none")
         .stack(secondaryGradeFatherEducation, "primary")
@@ -181,7 +181,7 @@ function show_father_education(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .xAxisLabel("father education level per gender")
-        .legend(dc.legend().x(420).y(20).itemHeight(15).gap(5))
+        .legend(dc.legend().x(370).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 50, left: 50 });
 }
 
@@ -273,8 +273,8 @@ function show_performance_to_workday_alcohol_cosumption(ndx) {
     var maxPerformance = performanceDim.top(1)[0].G3;
 
     dc.scatterPlot("#workday-alcohol-graduation")
-        .width(800)
-        .height(400)
+        .width(700)
+        .height(350)
         .x(d3.scale.linear().domain([minPerformance, maxPerformance]))
         .y(d3.scale.linear().domain([0, 10]))
         .brushOn(false)
@@ -282,7 +282,7 @@ function show_performance_to_workday_alcohol_cosumption(ndx) {
         .clipPadding(5)
         .xAxisLabel("")
         .title(function(d) {
-            return "Work day Consumption: " + d.key[1] + " units";
+            return "Workday Consumption: " + d.key[1] + " units";
         })
         .colors(genderColors)
         .colorAccessor(function(d) {
@@ -292,7 +292,7 @@ function show_performance_to_workday_alcohol_cosumption(ndx) {
         .group(workDayConsumptionGroup)
         .xAxisLabel("final grade math results")
         .yAxisLabel("units of alchool per workday")
-        .margins({ top: 10, right: 50, bottom: 75, left: 75 })
+        .margins({ top: 10, right: 50, bottom: 75, left: 65 })
         .yAxis().ticks(5);
 }
 
@@ -326,8 +326,8 @@ function show_student_performance(ndx) {
     var malePerformance = schoolPerformance(dim, "M");
 
     dc.barChart("#student-performance")
-        .width(800)
-        .height(400)
+        .width(700)
+        .height(350)
         .dimension(dim)
         .group(femalePerformance, "female")
         .stack(malePerformance, "male")
@@ -342,6 +342,6 @@ function show_student_performance(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .xAxisLabel("final grade math results")
-        .legend(dc.legend().x(720).y(20).itemHeight(15).gap(5))
+        .legend(dc.legend().x(620).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 50, left: 30 });
 }
