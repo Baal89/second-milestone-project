@@ -1,5 +1,25 @@
+
+.section {
+	border-bottom: 1px solid #e6e6e6;
+	padding: 40px 0;
+}
+
+.number-box, .fas.fa-graduation-cap {
+    font-size: 30px;
+}
+
 .number-box {
-    font-size: 60px;
-    text-align: center;
-    line-height: normal;
+	margin-right: 30px;
+}
+
+.custom-chart {
+    margin-bottom: 40px;
+}
+
+.percentage {
+    padding: 20px;
+}
+
+.section-paragraph {
+    padding: 10px 0;
 }
