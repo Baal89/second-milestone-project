@@ -1,15 +1,15 @@
-
 .section {
-	border-bottom: 1px solid #e6e6e6;
-	padding: 40px 0;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 40px 0;
 }
 
-.number-box, .fas.fa-graduation-cap {
+.number-box,
+.fas.fa-graduation-cap {
     font-size: 30px;
 }
 
 .number-box {
-	margin-right: 30px;
+    margin-right: 30px;
 }
 
 .custom-chart {
@@ -22,4 +22,41 @@
 
 .section-paragraph {
     padding: 10px 0;
+}
+
+footer {
+    background-color: #000000;
+    color: #fafafa;
+    min-height: 120px;
+    margin: 0;
+
+}
+
+#footer-details {
+    margin: 20px;
+    letter-spacing: 0.2em;
+    padding-top: 10px;
+}
+
+#footer-details a i {
+    width: 50px;
+    height: 50px;
+    padding: 35px 0;
+    border-radius: 80%;
+    font-size: 60px;
+    line-height: 7px;
+    text-align: center;
+    color: blue;
+    transition: all, 0.35s ease-in-out;
+    -moz-transition: all, 0.35s ease-in-out;
+    -webkit-transition: all, 0.35s ease-in-out;
+    -o-transition: all, 0.35s ease-in-out;
+}
+
+@media screen and (max-width: 648px) {
+    .container-graph {
+        overflow: hidden;
+        overflow-x: scroll;
+        border: none;
+    }
 }

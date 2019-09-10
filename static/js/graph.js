@@ -105,7 +105,7 @@ function show_mother_education(ndx) {
     var higherMotherEducation = motherEducation(dim, "4");
 
 
-    dc.barChart("#mother-education")
+    let mother_education = dc.barChart("#mother-education")
         .width(450)
         .height(250)
         .dimension(dim)
