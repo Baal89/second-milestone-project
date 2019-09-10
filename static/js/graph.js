@@ -18,8 +18,8 @@ function makeGraphs(error, performanceData) {
 
     show_percent_higher_mother_education(ndx, "F", "#percentage-of-female-mother-higher-education");
     show_percent_higher_mother_education(ndx, "M", "#percentage-of-male-mother-higher-education");
-    show_percent_higher_father_education(ndx, "F","#percentage-of-female-father-higher-education");
-    show_percent_higher_father_education(ndx, "M","#percentage-of-male-father-higher-education");
+    show_percent_higher_father_education(ndx, "F", "#percentage-of-female-father-higher-education");
+    show_percent_higher_father_education(ndx, "M", "#percentage-of-male-father-higher-education");
 
     show_performance_to_workday_alcohol_cosumption(ndx);
 
@@ -42,8 +42,8 @@ function show_sex_distribution(ndx) {
     var group = dim.group();
 
     dc.barChart("#sex-distribution")
-        .width(450)
-        .height(250)
+        .width(400)
+        .height(300)
         .margins({ top: 10, right: 50, bottom: 30, left: 50 })
         .dimension(dim)
         .group(group)
@@ -60,8 +60,8 @@ function show_age_distribution(ndx) {
     var group = dim.group();
 
     dc.barChart("#age-distribution")
-        .width(450)
-        .height(250)
+        .width(400)
+        .height(300)
         .margins({ top: 10, right: 50, bottom: 30, left: 50 })
         .dimension(dim)
         .group(group)
@@ -105,9 +105,9 @@ function show_mother_education(ndx) {
     var higherMotherEducation = motherEducation(dim, "4");
 
 
-    let mother_education = dc.barChart("#mother-education")
-        .width(450)
-        .height(250)
+    dc.barChart("#mother-education")
+        .width(400)
+        .height(300)
         .dimension(dim)
         .group(noneMotherEducation, "none")
         .stack(secondaryGradeMotherEducation, "primary")
@@ -125,7 +125,7 @@ function show_mother_education(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .xAxisLabel("Mother education level per gender")
-        .legend(dc.legend().x(370).y(20).itemHeight(15).gap(5))
+        .legend(dc.legend().x(320).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 50, left: 50 });
 }
 
@@ -162,8 +162,8 @@ function show_father_education(ndx) {
 
 
     dc.barChart("#father-education")
-        .width(450)
-        .height(250)
+        .width(400)
+        .height(300)
         .dimension(dim)
         .group(noneFatherEducation, "none")
         .stack(secondaryGradeFatherEducation, "primary")
@@ -181,7 +181,7 @@ function show_father_education(ndx) {
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .xAxisLabel("father education level per gender")
-        .legend(dc.legend().x(370).y(20).itemHeight(15).gap(5))
+        .legend(dc.legend().x(320).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 50, left: 50 });
 }
 
@@ -190,7 +190,7 @@ function show_percent_higher_mother_education(ndx, gender, element) {
         function(p, v) {
             if (v.sex === gender) {
                 p.count++;
-                if(v.Medu === "4") {
+                if (v.Medu === "4") {
                     p.are_higher++;
                 }
             }
@@ -199,34 +199,35 @@ function show_percent_higher_mother_education(ndx, gender, element) {
         function(p, v) {
             if (v.sex === gender) {
                 p.count--;
-                if(v.Medu === "4") {
+                if (v.Medu === "4") {
                     p.are_higher--;
                 }
             }
             return p;
         },
         function() {
-            return {count: 0, are_higher: 0};    
+            return { count: 0, are_higher: 0 };
         },
     );
-   dc.numberDisplay(element)
+    dc.numberDisplay(element)
         .formatNumber(d3.format(".2%"))
-        .valueAccessor(function (d) {
+        .valueAccessor(function(d) {
             if (d.count == 0) {
                 return 0;
-            } else {
+            }
+            else {
                 return (d.are_higher / d.count);
             }
         })
         .group(percentageMotherHigherEducation);
 }
 
- function show_percent_higher_father_education(ndx, gender, element) {
-       var percentageFatherHigherEducation = ndx.groupAll().reduce(
+function show_percent_higher_father_education(ndx, gender, element) {
+    var percentageFatherHigherEducation = ndx.groupAll().reduce(
         function(p, v) {
             if (v.sex === gender) {
                 p.count++;
-                if(v.Fedu === "4") {
+                if (v.Fedu === "4") {
                     p.are_higher++;
                 }
             }
@@ -235,27 +236,28 @@ function show_percent_higher_mother_education(ndx, gender, element) {
         function(p, v) {
             if (v.sex === gender) {
                 p.count--;
-                if(v.Fedu === "4") {
+                if (v.Fedu === "4") {
                     p.are_higher--;
                 }
             }
             return p;
         },
         function() {
-            return {count: 0, are_higher: 0};    
+            return { count: 0, are_higher: 0 };
         },
     );
-   dc.numberDisplay(element)
+    dc.numberDisplay(element)
         .formatNumber(d3.format(".2%"))
-        .valueAccessor(function (d) {
+        .valueAccessor(function(d) {
             if (d.count == 0) {
                 return 0;
-            } else {
+            }
+            else {
                 return (d.are_higher / d.count);
             }
         })
         .group(percentageFatherHigherEducation);
- }
+}
 
 function show_performance_to_workday_alcohol_cosumption(ndx) {
 
@@ -274,7 +276,7 @@ function show_performance_to_workday_alcohol_cosumption(ndx) {
 
     dc.scatterPlot("#workday-alcohol-graduation")
         .width(700)
-        .height(350)
+        .height(400)
         .x(d3.scale.linear().domain([minPerformance, maxPerformance]))
         .y(d3.scale.linear().domain([0, 10]))
         .brushOn(false)
@@ -327,7 +329,7 @@ function show_student_performance(ndx) {
 
     dc.barChart("#student-performance")
         .width(700)
-        .height(350)
+        .height(400)
         .dimension(dim)
         .group(femalePerformance, "female")
         .stack(malePerformance, "male")
@@ -345,3 +347,11 @@ function show_student_performance(ndx) {
         .legend(dc.legend().x(620).y(20).itemHeight(15).gap(5))
         .margins({ top: 10, right: 100, bottom: 50, left: 30 });
 }
+
+
+`window.addEventListener("resize", myFunction);
+
+function myFunction() {
+    dc.renderAll()
+}
+`;

@@ -32,6 +32,12 @@ footer {
 
 }
 
+
+.project {
+    top: 20px;
+    text-align: right;
+}
+
 #footer-details {
     margin: 20px;
     letter-spacing: 0.2em;
@@ -39,14 +45,16 @@ footer {
 }
 
 #footer-details a i {
-    width: 50px;
-    height: 50px;
     padding: 35px 0;
     border-radius: 80%;
     font-size: 60px;
     line-height: 7px;
     text-align: center;
     color: blue;
+}
+
+#footer-details a i:hover {
+    color: #e79a23;
     transition: all, 0.35s ease-in-out;
     -moz-transition: all, 0.35s ease-in-out;
     -webkit-transition: all, 0.35s ease-in-out;
@@ -54,9 +62,19 @@ footer {
 }
 
 @media screen and (max-width: 648px) {
-    .container-graph {
+    .custom-chart {
         overflow: hidden;
         overflow-x: scroll;
         border: none;
+    }
+    .number-box {
+        margin: 0;
+    }
+    .project {
+        top: 0;
+        text-align: center;
+    }
+    .repository {
+        text-align: center;
     }
 }
