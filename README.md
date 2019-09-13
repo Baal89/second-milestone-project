@@ -66,16 +66,16 @@ The webpage is tested across the following browsers,
 
 ##### Testing Tools Used:
 
-- [**W3C CSS Validation Service**](https://jigsaw.w3.org/css-validator/).  
-- [**W3C Markup Validation Service**](https://validator.w3.org/).    
-- [**JavaScript** (code passes through a linter)](https://jshint.com/)   
-- My Samsung Galaxy S7   
+- [**W3C CSS Validation Service**](https://jigsaw.w3.org/css-validator/).(no error found)  
+- [**W3C Markup Validation Service**](https://validator.w3.org/).(no error found)    
+- [**JavaScript** (code passes through a linter)](https://jshint.com/)(no error found)   
+- My Samsung Galaxy S7(the site display correctly)   
 - Chrome Dev tools for inspect elements for styling purpose and media queries  
 
 The page is fully responsive and change dynamically if the screen is resize. Above 768px there are no problem for the correct visualization 
 of the charts. Below 768px I had to create an x-scroll for each chart to let them show correctly and I had to place each chart in one row due 
 to the not responsiveness of **d3**.
-
+All the chart are working and the results they show match the data in the CSV file.
 
 # Deployment
 
