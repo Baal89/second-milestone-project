@@ -265,7 +265,7 @@ function show_performance_to_workday_alcohol_cosumption(ndx) {
         .domain(["Female", "Male"])
         .range(["pink", "blue"]);
 
-    var performanceDim = ndx.dimension(dc.pluck("G3"))
+    var performanceDim = ndx.dimension(dc.pluck("G3"));
     var consumptionDim = ndx.dimension(function(d) {
         return [d.G3, d.Dalc, d.sex];
     });
@@ -348,10 +348,3 @@ function show_student_performance(ndx) {
         .margins({ top: 10, right: 100, bottom: 50, left: 30 });
 }
 
-
-`window.addEventListener("resize", myFunction);
-
-function myFunction() {
-    dc.renderAll()
-}
-`;
